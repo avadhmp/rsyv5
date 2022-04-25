@@ -150,7 +150,7 @@ class Camera_subscriber():
         cv2.waitKey(4)    
 
 if __name__ == '__main__':
-    rospy.init_node(args=None)
+    rospy.init_node('my_node_name')
     camera_subscriber = Camera_subscriber()
     rospy.spin(camera_subscriber)
     rospy.signal_shutdown('complete')
