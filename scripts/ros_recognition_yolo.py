@@ -29,7 +29,7 @@ bridge = CvBridge()
 class Camera_subscriber():
 
     def __init__(self):
-        super().__init__('camera_subscriber')
+        super().__init__()
 
         weights=rospy.get_param("~weights")  # model.pt path(s)
         self.imgsz=640  # inference size (pixels)
