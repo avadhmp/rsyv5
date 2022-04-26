@@ -26,27 +26,27 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 
 bridge = CvBridge()
 
-class Camera_subscriber():
+class Camera_subscriber(node):
 
     def __init__(self):
         super().__init__('camera_subscriber')
 
-        weights='yolov5s.pt'  # model.pt path(s)
+        weights=rospy.get_param("~weights")  # model.pt path(s)
         self.imgsz=640  # inference size (pixels)
-        self.conf_thres=0.25  # confidence threshold
-        self.iou_thres=0.45  # NMS IOU threshold
-        self.max_det=1000  # maximum detections per image
-        self.classes=None  # filter by class: --class 0, or --class 0 2 3
-        self.agnostic_nms=False  # class-agnostic NMS
+        self.conf_thres=rospy.get_param("~confidence_threshold")  # confidence threshold
+        self.iou_thres=rospy.get_param("~iou_threshold")  # NMS IOU threshold
+        self.max_det=rospy.get_param("~maximum_detections")  # maximum detections per image
+        self.classes=rospy.get_param("~classes", None)  # filter by class: --class 0, or --class 0 2 3
+        self.agnostic_nms=rospy.get_param("~agnostic_nms")  # class-agnostic NMS
         self.augment=False  # augmented inference
         self.visualize=False  # visualize features
-        self.line_thickness=3  # bounding box thickness (pixels)
+        self.line_thickness=rospy.get_param("~line_thickness")  # bounding box thickness (pixels)
         self.hide_labels=False  # hide labels
         self.hide_conf=False  # hide confidences
         self.half=False  # use FP16 half-precision inference
         self.stride = 32
-        device_num=''  # cuda device, i.e. 0 or 0,1,2,3 or cpu
-        view_img=False  # show results
+        device_num=select_device(str(rospy.get_param("~device","")))  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+        view_img=rospy.get_param("~view_image")  # show results
         save_crop=False  # save cropped prediction boxes
         nosave=False  # do not save images/videos
         update=False  # update all models
@@ -78,10 +78,10 @@ class Camera_subscriber():
         # Run inference
         if self.device.type != 'cpu':
             self.model(torch.zeros(1, 3, imgsz, imgsz).to(self.device).type_as(next(model.parameters())))  # run once
-
+        #'rgb_cam/image_raw'
         self.subscription = self.create_subscription(
             Image,
-            'rgb_cam/image_raw',
+            get_topic_type(rospy.get_param("~input_image_topic"),
             self.camera_callback,
             10)
         self.subscription  # prevent unused variable warning
@@ -150,8 +150,8 @@ class Camera_subscriber():
         cv2.waitKey(4)    
 
 if __name__ == '__main__':
-    rospy.init_node('my_node_name')
+    rospy.init_node('yolov5')
     camera_subscriber = Camera_subscriber()
     rospy.spin(camera_subscriber)
-    rospy.signal_shutdown('complete')
+    rospy.signal_shutdown()
 
