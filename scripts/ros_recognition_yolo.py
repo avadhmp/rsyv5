@@ -81,7 +81,7 @@ class Camera_subscriber(node):
         #'rgb_cam/image_raw'
         self.subscription = self.create_subscription(
             Image,
-            get_topic_type(rospy.get_param("~input_image_topic"),
+            rospy.get_param("~input_image_topic"),
             self.camera_callback,
             10)
         self.subscription  # prevent unused variable warning
