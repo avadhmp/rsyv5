@@ -26,7 +26,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 
 bridge = CvBridge()
 
-class Camera_subscriber(node):
+class Camera_subscriber():
 
     def __init__(self):
         super().__init__('camera_subscriber')
