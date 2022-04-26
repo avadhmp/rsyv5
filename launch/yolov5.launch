@@ -29,7 +29,6 @@
         <param name="confidence_threshold"  value="$(arg confidence_threshold)"/>
         <param name="iou_threshold"         value="$(arg iou_threshold)" />
         <param name="maximum_detections"    value="$(arg maximum_detections)"/>
-        <param name="device"                value="$(arg device)" />
         <param name="agnostic_nms"          value="$(arg agnostic_nms)" />
         <param name="line_thickness"        value="$(arg line_thickness)"/>
       
