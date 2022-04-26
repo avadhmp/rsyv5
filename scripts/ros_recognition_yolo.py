@@ -51,7 +51,7 @@ class Camera_subscriber():
         nosave=False  # do not save images/videos
         update=False  # update all models
         name='exp'  # save results to project/name
-
+        print('test1')
         # Initialize
         set_logging()
         self.device = select_device(device_num)
@@ -95,7 +95,7 @@ class Camera_subscriber():
         self.rect = np.unique(s, axis=0).shape[0] == 1  # rect inference if all shapes equal
         if not self.rect:
             print('WARNING: Different stream shapes detected. For optimal performance supply similarly-shaped streams.')
-
+        print('test2')
         # Letterbox
         img0 = img.copy()
         img = img[np.newaxis, :, :, :]        
