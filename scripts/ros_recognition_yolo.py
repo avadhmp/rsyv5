@@ -45,7 +45,7 @@ class Camera_subscriber():
         self.hide_conf=False  # hide confidences
         self.half=False  # use FP16 half-precision inference
         self.stride = 32
-        device_num=select_device(str(rospy.get_param("~device","")))  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+        device_num=''  # cuda device, i.e. 0 or 0,1,2,3 or cpu
         view_img=rospy.get_param("~view_image")  # show results
         save_crop=False  # save cropped prediction boxes
         nosave=False  # do not save images/videos
