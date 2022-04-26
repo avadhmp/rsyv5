@@ -151,7 +151,7 @@ class Camera_subscriber():
 
 if __name__ == '__main__':
     rospy.init_node('yolov5')
-    camera_subscriber = Camera_subscriber()
-    rospy.spin(camera_subscriber)
+    #camera_subscriber = Camera_subscriber()
+    rospy.spin(Camera_subscriber())
     rospy.signal_shutdown()
 
