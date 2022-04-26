@@ -24,7 +24,7 @@
     <arg name="output_image_topic"      default="/yolov5/image_out"/>
 
 
-    <node pkg="yolov5_ros" name="ros_recognition_yolo" type="ros_recognition_yolo.py" output="screen">
+    <node pkg="rsyv5" name="ros_recognition_yolo" type="ros_recognition_yolo.py" output="screen">
         <param name="weights"               value="yolov5s.pt"/>
         <param name="data"                  value="$(arg data)"/>
         <param name="confidence_threshold"  value="$(arg confidence_threshold)"/>
