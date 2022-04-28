@@ -5,7 +5,7 @@ import rospy
 from std_msgs.msg import Header
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
-from rs_yolo.msg import Info
+from rsyv5.msg import Info
 
 import random
 from utils.torch_utils import select_device, load_classifier, time_synchronized
