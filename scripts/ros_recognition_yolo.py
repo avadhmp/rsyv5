@@ -8,7 +8,7 @@ from geometry_msgs.msg import Point
 from rs_yolo.msg import Info
 
 import random
-from utils.torch_utils import select_device, load_classifier, time_sync
+from utils.torch_utils import select_device, load_classifier, time_synchronized
 from utils.general import (
     check_img_size, non_max_suppression, apply_classifier, scale_coords,
     xyxy2xywh, strip_optimizer, set_logging)
