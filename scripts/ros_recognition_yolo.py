@@ -2,11 +2,12 @@
 import os, sys
 import rospy
 #from rclpy.node import Node
-#import pyrealsense2.pyrealsense2 as rs
+import pyrealsense2.pyrealsense2 as rs
 from sensor_msgs.msg import Image, CompressedImage
+from geometry_msgs.msg import Point
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
-
+from rsyv5.msg import xyzc
 import numpy as np
 import time
 from pathlib import Path
@@ -15,6 +16,7 @@ import torch.backends.cudnn as cudnn
 
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())
+
 
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
@@ -136,22 +138,44 @@ class Camera_subscriber():
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], img0.shape).round()
 
-                # Print results
-                for c in det[:, -1].unique():
-                    n = (det[:, -1] == c).sum()  # detections per class
-                    s += f"{n} {self.names[int(c)]}{'s' * (n > 1)}, "  # add to string
-                
+                # Write results
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
-                    label = None if self.hide_labels else (self.names[c] if self.hide_conf else f'{self.names[c]} {conf:.2f}')
-                    plot_one_box(xyxy, img0, label=label, color=colors(c, True), line_thickness=self.line_thickness)
-
+                    label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
+                    annotator.box_label(xyxy, label, color=colors(c, True))
+                    x = int((xyxy[0] + xyxy[2])/2)
+                    y = int((xyxy[1] + xyxy[3])/2)
+                    #'''
+                    dist = depth_frame.get_distance(x + 4, y + 8)*1000
+                    Xtarget = dist*(x+4 - intr.ppx)/intr.fx - 35 #the distance from RGB camera to realsense center
+                    Ytarget = dist*(y+8 - intr.ppy)/intr.fy
+                    Ztarget = dist
+                    coordinate_text = "(" + str(round(Xtarget)) + ", " + str(round(Ytarget)) + ", " + str(round(Ztarget)) + ")"
+                    detection_msg = xyzc()
+                    detection_msg.x = Xtarget
+                    detection_msg.y = Ytarget
+                    detection_msg.z = Ztarget
+                    detection_msg.c = c
+                    
+                    pub.publish(detect_msg)
+                    #cv2.putText(im0, text=coordinate_text, org=(int((xyxy[0] + xyxy[2])/2), int((xyxy[1] + xyxy[3])/2)),
+                    #fontFace = font, fontScale = 1, color=(255,255,255), thickness=2, lineType = cv2.LINE_AA)
+                    #'''
+                    '''
+                    dist1 = depth_frame.get_distance(xyxy[0] + 4, xyxy[1] + 8)*1000
+                    dist2 = depth_frame.get_distance(xyxy[2] + 4, xyxy[3] + 8)*1000
+                    height = dist2*(xyxy[3] + 8 - intr.ppy)/intr.fy - dist1*(xyxy[1] + 8 - intr.ppy)/intr.fy
+                    height_text = "(" + str(height) + ")"
+                    cv2.putText(im0, text=height_text, org=(int((xyxy[0] + xyxy[2])/2), int((xyxy[1] + xyxy[3])/2)),
+                    fontFace = font, fontScale = 1, color=(255,255,255), thickness=2, lineType = cv2.LINE_AA)
+                    '''
         cv2.imshow("IMAGE", img0)
         cv2.waitKey(4)    
 
 if __name__ == '__main__':
     rospy.init_node('yolov5')
     #camera_subscriber = Camera_subscriber()
+    pub = rospy.Publisher("/detect_msg_out", xyzc, queue_size=10)
     rospy.spin()
     rospy.signal_shutdown()
 
