@@ -58,7 +58,7 @@ add_message_files(
   xyzc.msg
 #   Message1.msg
 #   Message2.msg
- )
+)
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
@@ -74,11 +74,12 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(DEPENDENCIES 
+generate_messages(
+ DEPENDENCIES 
  geometry_msgs 
  std_msgs 
  sensor_msgs  
-  )
+)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
