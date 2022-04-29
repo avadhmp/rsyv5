@@ -114,7 +114,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES yolov5_ros
-#  CATKIN_DEPENDS rospy sensor_msgs std_msgs geometry_msgs message_runtime
+ CATKIN_DEPENDS rospy sensor_msgs std_msgs geometry_msgs message_runtime
 #  DEPENDS system_lib
 )
 
