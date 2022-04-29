@@ -75,10 +75,10 @@ add_message_files(
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-  DEPENDENCIES
-  geometry_msgs
-  sensor_msgs
-  std_msgs  
+  DEPENDENCIES 
+    geometry_msgs
+    std_msgs 
+    sensor_msgs  
   )
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -112,7 +112,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES yolov5_ros
- CATKIN_DEPENDS rospy sensor_msgs std_msgs geometry_msgs message_runtime
+ CATKIN_DEPENDS rospy geometry_msgs sensor_msgs std_msgs message_runtime
 #  DEPENDS system_lib
 )
 
