@@ -157,7 +157,7 @@ class Camera_subscriber():
                     detection_msg.z = Ztarget
                     detection_msg.c = c
                     
-                    pub.publish(detect_msg)
+                    pub.subscribe(detect_msg)
                     #cv2.putText(im0, text=coordinate_text, org=(int((xyxy[0] + xyxy[2])/2), int((xyxy[1] + xyxy[3])/2)),
                     #fontFace = font, fontScale = 1, color=(255,255,255), thickness=2, lineType = cv2.LINE_AA)
                     #'''
@@ -175,7 +175,7 @@ class Camera_subscriber():
 if __name__ == '__main__':
     rospy.init_node('yolov5')
     #camera_subscriber = Camera_subscriber()
-    pub = rospy.Publisher("/detect_msg_out", xyzc, queue_size=10)
+    pub = rospy.Subscriber("/detect_msg_out", xyzc, queue_size=10)
     rospy.spin()
     rospy.signal_shutdown()
 
