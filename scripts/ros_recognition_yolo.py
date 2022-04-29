@@ -17,7 +17,7 @@ import torch.backends.cudnn as cudnn
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())
 
-
+from xyzc.msg import xyzc
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
 from utils.augmentations import Albumentations, augment_hsv, copy_paste, letterbox, mixup, random_perspective
@@ -87,6 +87,10 @@ class Camera_subscriber():
             self.camera_callback,
             10)
         self.subscription  # prevent unused variable warning
+        self.pub = rospy.Publisher('detect',xyzc,queue_size=10)
+        rospy.loginfo("Launched node for object detection")
+        rospy.spin
+        
 
     def camera_callback(self, data):
         t0 = time.time()
@@ -151,13 +155,13 @@ class Camera_subscriber():
                     Ytarget = dist*(y+8 - intr.ppy)/intr.fy
                     Ztarget = dist
                     coordinate_text = "(" + str(round(Xtarget)) + ", " + str(round(Ytarget)) + ", " + str(round(Ztarget)) + ")"
-                    detection_msg = xyzc()
-                    detection_msg.x = Xtarget
-                    detection_msg.y = Ytarget
-                    detection_msg.z = Ztarget
-                    detection_msg.c = c
+                    detection_result = xyzc()
+                    detection_result.x = Xtarget
+                    detection_result.y = Ytarget
+                    detection_result.z = Ztarget
+                    detection_result.c = c
                     
-                    pub.subscribe(detect_msg)
+                    pub.publish(detect_results)
                     #cv2.putText(im0, text=coordinate_text, org=(int((xyxy[0] + xyxy[2])/2), int((xyxy[1] + xyxy[3])/2)),
                     #fontFace = font, fontScale = 1, color=(255,255,255), thickness=2, lineType = cv2.LINE_AA)
                     #'''
@@ -175,7 +179,7 @@ class Camera_subscriber():
 if __name__ == '__main__':
     rospy.init_node('yolov5')
     #camera_subscriber = Camera_subscriber()
-    pub = rospy.Subscriber("/detect_msg_out", xyzc, queue_size=10)
-    rospy.spin()
-    rospy.signal_shutdown()
+    #pub = rospy.Publisher("/detect_msg_out", xyzc, queue_size=10)
+#    rospy.spin()
+#    rospy.signal_shutdown()
 
