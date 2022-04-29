@@ -79,6 +79,7 @@ generate_messages(
     DEPENDENCIES
     sensor_msgs
     std_msgs
+    geometry_msgs
   )
 
 ################################################
