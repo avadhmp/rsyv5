@@ -6,6 +6,7 @@ import pyrealsense2.pyrealsense2 as rs
 from sensor_msgs.msg import Image, CompressedImage
 from geometry_msgs.msg import Point
 from cv_bridge import CvBridge, CvBridgeError
+from rospkg import RosPack
 import cv2
 from rsyv5.msg import xyzc
 import numpy as np
@@ -17,7 +18,7 @@ import torch.backends.cudnn as cudnn
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())
 
-from xyzc.msg import xyzc
+#from xyzc.msg import xyzc
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
 from utils.augmentations import Albumentations, augment_hsv, copy_paste, letterbox, mixup, random_perspective
