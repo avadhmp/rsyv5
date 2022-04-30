@@ -90,7 +90,7 @@ class Camera_subscriber():
         self.subscription  # prevent unused variable warning
         self.pub = rospy.Publisher('detect',xyzc,queue_size=10)
         rospy.loginfo("Launched node for object detection")
-        rospy.spin
+        
         
 
     def camera_callback(self, data):
@@ -179,8 +179,8 @@ class Camera_subscriber():
 
 if __name__ == '__main__':
     rospy.init_node('yolov5')
-    #camera_subscriber = Camera_subscriber()
+    camera_subscriber = Camera_subscriber()
     #pub = rospy.Publisher("/detect_msg_out", xyzc, queue_size=10)
-#    rospy.spin()
+    rospy.spin()
 #    rospy.signal_shutdown()
 
